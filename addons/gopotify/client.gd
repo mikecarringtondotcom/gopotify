@@ -63,14 +63,14 @@ func write_credentials(credentials: GopotifyCredentials) -> void:
 	file.close()
 
 func _start_auth_server() -> void:
-	self.server = GopotifyAuthServer.new(callable(self, "request_new_credentials"))
+	self.server = GopotifyAuthServer.new(Callable(self, "request_new_credentials"))
 	add_child(self.server)
 
 func _stop_auth_server() -> void:
 	self.server.queue_free()
 	self.server = null
 
-async func request_new_credentials(code) -> bool:
+func request_new_credentials(code) -> bool:
 	var url := AUTH_URL + "api/token/"
 	var data := self._build_query_params({
 		"grant_type": "authorization_code",
@@ -86,7 +86,11 @@ async func request_new_credentials(code) -> bool:
 	var result: Array = await self.simple_request(HTTPClient.METHOD_POST, url, headers, data)
 	if result[1] == HTTPClient.RESPONSE_OK:
 		var test_json_conv = JSON.new()
-		test_json_conv.parse(result[3].get_string_from_ascii()).result
+		var err = test_json_conv.parse(result[3].get_string_from_ascii())
+		if err != OK:
+			push_error("JSON parse error: " + test_json_conv.get_error_message())
+			return false
+
 		var json_result = test_json_conv.get_data()
 		var credentials = GopotifyCredentials.new(
 			json_result["access_token"],
@@ -99,7 +103,7 @@ async func request_new_credentials(code) -> bool:
 
 	return false
 
-async func request_user_authorization() -> void:
+func request_user_authorization() -> void:
 	self._start_auth_server()
 	var url = AUTH_URL + "authorize/"
 	var result = await self.simple_request(
@@ -136,7 +140,7 @@ func _build_query_params(params: Dictionary = {}) -> String:
 
 	return "&".join(param_array)
 
-async func _spotify_request(path: String, http_method: int, body: String = "", retries: int = 1) -> GopotifyResponse:
+func _spotify_request(path: String, http_method: int, body: String = "", retries: int = 1) -> GopotifyResponse:
 	if retries < 0:
 		return GopotifyResponse.new(500, [], [])
 
