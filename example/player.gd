@@ -3,7 +3,7 @@ extends Control
 
 func _on_PlayPause_pressed():
 	var player_state = JSON.parse(
-		yield($Gopotify.get_player_state(), "completed").body.get_string_from_ascii()
+		await $Gopotify.get_player_state().completed.body.get_string_from_ascii()
 	).result
 	if player_state["is_playing"]:
 		$Gopotify.pause()

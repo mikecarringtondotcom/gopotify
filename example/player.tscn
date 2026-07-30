@@ -13,26 +13,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
-margin_left = 39.0
-margin_top = 11.0
-margin_right = 130.0
-margin_bottom = 31.0
+offset_left = 39.0
+offset_top = 11.0
+offset_right = 130.0
+offset_bottom = 31.0
 
 [node name="Previous" type="Button" parent="CenterContainer/HBoxContainer"]
-margin_right = 28.0
-margin_bottom = 20.0
+offset_right = 28.0
+offset_bottom = 20.0
 text = "<<"
 
 [node name="PlayPause" type="Button" parent="CenterContainer/HBoxContainer"]
-margin_left = 32.0
-margin_right = 59.0
-margin_bottom = 20.0
+offset_left = 32.0
+offset_right = 59.0
+offset_bottom = 20.0
 text = "|>"
 
 [node name="Next" type="Button" parent="CenterContainer/HBoxContainer"]
-margin_left = 63.0
-margin_right = 91.0
-margin_bottom = 20.0
+offset_left = 63.0
+offset_right = 91.0
+offset_bottom = 20.0
 text = ">>"
 
 [node name="Gopotify" type="HTTPRequest" parent="."]
